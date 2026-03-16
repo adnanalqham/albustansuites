@@ -32,7 +32,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             header('Location: dashboard.php'); exit;
         }
     }
-    $errors[] = 'Invalid email or password';
+    $errors[] = t('admin_invalid_login');
 }
 
 // Auto-create default admin if none exists
@@ -51,7 +51,7 @@ try {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Login - Al Bustan Suites</title>
+<title><?= t('admin_login_title') ?></title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/admin.css">
@@ -82,25 +82,25 @@ body{display:flex;align-items:center;justify-content:center;min-height:100vh;bac
 <div class="login-card">
   <div class="login-logo">
     <img src="../images/logo.png" alt="Al Bustan" onerror="this.style.display='none'">
-    <h1>Admin Panel</h1>
+    <h1><?= t('admin_panel') ?></h1>
     <p>Al Bustan Luxurious Suites</p>
   </div>
 
   <?php if($errors): ?>
-  <div class="error"><i class="fas fa-exclamation-circle"></i><?= htmlspecialchars($errors[0]) ?></div>
+  <div class="error"><i class="fas fa-exclamation-circle"></i><?= $errors[0] ?></div>
   <?php endif; ?>
 
   <form method="POST" autocomplete="on">
 
     <div class="form-group">
-      <label>Email Address</label>
+      <label><?= t('admin_email_address') ?></label>
       <div class="input-wrap">
         <input type="email" name="email" required autofocus placeholder="admin@albustan.com" autocomplete="username" value="<?= htmlspecialchars($_POST['email']??'') ?>">
       </div>
     </div>
 
     <div class="form-group">
-      <label>Password</label>
+      <label><?= t('admin_password') ?></label>
       <div class="input-wrap">
         <input type="password" name="password" id="pw-field" required placeholder="••••••••" autocomplete="current-password">
         <button type="button" class="toggle-pw" id="toggle-pw" title="Show/hide password">
@@ -112,19 +112,19 @@ body{display:flex;align-items:center;justify-content:center;min-height:100vh;bac
     <div class="remember-row">
       <label class="remember-label">
         <input type="checkbox" name="remember" id="remember" <?= isset($_POST['remember'])?'checked':''?>>
-        Remember me for 30 days
+        <?= t('admin_remember_me') ?>
       </label>
-      <a href="forgot-password.php" class="forgot-link">Forgot password?</a>
+      <a href="forgot-password.php" class="forgot-link"><?= t('admin_forgot_password') ?></a>
     </div>
 
     <button type="submit" class="btn btn-primary" style="width:100%;padding:13px;font-size:15px;">
-      <i class="fas fa-sign-in-alt"></i> Sign In
+      <i class="fas fa-sign-in-alt"></i> <?= t('admin_sign_in') ?>
     </button>
   </form>
 
   <hr class="divider">
   <p style="text-align:center;font-size:12px;color:var(--gray);">
-    <a href="../index.php" style="color:var(--gold);"><i class="fas fa-arrow-left"></i> Back to Website</a>
+    <a href="../index.php" style="color:var(--gold);"><i class="fas fa-arrow-left"></i> <?= t('admin_back_website') ?></a>
   </p>
 </div>
 

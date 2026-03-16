@@ -4,7 +4,7 @@ require_once __DIR__ . '/../functions.php';
 requireAdmin();
 $db = getDB();
 $adminPage = 'bookings';
-$adminPageTitle = 'Manage Bookings';
+$adminPageTitle = 'admin_manage_bookings';
 
 // Status filter
 $filterStatus = sanitize($_GET['status'] ?? '');
@@ -43,24 +43,24 @@ require __DIR__ . '/includes/header.php';
 <!-- EDIT BOOKING MODAL -->
 <div class="card">
   <div class="card-header">
-    <span class="card-title">Booking: <?= e($editBooking['booking_ref']) ?></span>
-    <a href="bookings.php" class="btn btn-sm btn-secondary"><i class="fas fa-arrow-left"></i> Back</a>
+    <span class="card-title"><?= t('admin_booking_ref') ?>: <?= e($editBooking['booking_ref']) ?></span>
+    <a href="bookings.php" class="btn btn-sm btn-secondary"><i class="fas fa-arrow-left"></i> <?= t('admin_back') ?></a>
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
     <div>
       <table><tbody>
-        <tr><td style="color:var(--gray);padding:8px 0;width:140px;">Guest Name</td><td><strong><?= e($editBooking['guest_name']) ?></strong></td></tr>
-        <tr><td style="color:var(--gray);padding:8px 0;">Email</td><td><?= e($editBooking['guest_email']) ?></td></tr>
-        <tr><td style="color:var(--gray);padding:8px 0;">Phone</td><td><?= e($editBooking['guest_phone']) ?></td></tr>
-        <tr><td style="color:var(--gray);padding:8px 0;">Nationality</td><td><?= e($editBooking['guest_nationality']) ?></td></tr>
-        <tr><td style="color:var(--gray);padding:8px 0;">Room</td><td><?= e($editBooking['room_name']) ?></td></tr>
-        <tr><td style="color:var(--gray);padding:8px 0;">Check-in</td><td><?= formatDate($editBooking['check_in']) ?></td></tr>
-        <tr><td style="color:var(--gray);padding:8px 0;">Check-out</td><td><?= formatDate($editBooking['check_out']) ?></td></tr>
-        <tr><td style="color:var(--gray);padding:8px 0;">Nights</td><td><?= $editBooking['nights'] ?></td></tr>
-        <tr><td style="color:var(--gray);padding:8px 0;">Adults</td><td><?= $editBooking['adults'] ?> + <?= $editBooking['children'] ?> children</td></tr>
-        <tr><td style="color:var(--gray);padding:8px 0;">Payment</td><td><?= e($editBooking['payment_method']) ?></td></tr>
-        <tr><td style="color:var(--gray);padding:8px 0;">Total</td><td style="font-weight:700;color:var(--gold);">$<?= number_format($editBooking['total_price'],2) ?></td></tr>
-        <tr><td style="color:var(--gray);padding:8px 0;">Requests</td><td><?= e($editBooking['special_requests'] ?: 'None') ?></td></tr>
+        <tr><td style="color:var(--gray);padding:8px 0;width:140px;"><?= t('admin_guest_name') ?></td><td><strong><?= e($editBooking['guest_name']) ?></strong></td></tr>
+        <tr><td style="color:var(--gray);padding:8px 0;"><?= t('admin_email') ?></td><td><?= e($editBooking['guest_email']) ?></td></tr>
+        <tr><td style="color:var(--gray);padding:8px 0;"><?= t('admin_phone') ?></td><td><?= e($editBooking['guest_phone']) ?></td></tr>
+        <tr><td style="color:var(--gray);padding:8px 0;"><?= t('admin_nationality') ?></td><td><?= e($editBooking['guest_nationality']) ?></td></tr>
+        <tr><td style="color:var(--gray);padding:8px 0;"><?= t('admin_room') ?></td><td><?= e($editBooking['room_name']) ?></td></tr>
+        <tr><td style="color:var(--gray);padding:8px 0;"><?= t('admin_checkin') ?></td><td><?= formatDate($editBooking['check_in']) ?></td></tr>
+        <tr><td style="color:var(--gray);padding:8px 0;"><?= t('admin_checkout') ?></td><td><?= formatDate($editBooking['check_out']) ?></td></tr>
+        <tr><td style="color:var(--gray);padding:8px 0;"><?= t('admin_nights') ?></td><td><?= $editBooking['nights'] ?></td></tr>
+        <tr><td style="color:var(--gray);padding:8px 0;"><?= t('admin_adults') ?></td><td><?= $editBooking['adults'] ?> + <?= $editBooking['children'] ?> <?= t('admin_children') ?></td></tr>
+        <tr><td style="color:var(--gray);padding:8px 0;"><?= t('admin_payment') ?></td><td><?= e($editBooking['payment_method']) ?></td></tr>
+        <tr><td style="color:var(--gray);padding:8px 0;"><?= t('admin_total') ?></td><td style="font-weight:700;color:var(--gold);">$<?= number_format($editBooking['total_price'],2) ?></td></tr>
+        <tr><td style="color:var(--gray);padding:8px 0;"><?= t('admin_requests') ?></td><td><?= e($editBooking['special_requests'] ?: 'None') ?></td></tr>
       </tbody></table>
     </div>
     <div>
@@ -68,19 +68,19 @@ require __DIR__ . '/includes/header.php';
         <input type="hidden" name="update_status" value="1">
         <input type="hidden" name="booking_id" value="<?= $editBooking['id'] ?>">
         <div class="form-group">
-          <label>Update Status</label>
+          <label><?= t('admin_update_status') ?></label>
           <select name="status">
             <?php foreach(['pending','confirmed','checked_in','checked_out','cancelled'] as $s): ?>
             <option value="<?= $s ?>" <?= $editBooking['status']===$s?'selected':'' ?>><?= ucfirst(str_replace('_',' ',$s)) ?></option>
             <?php endforeach; ?>
           </select>
         </div>
-        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Update Status</button>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> <?= t('admin_update_status') ?></button>
       </form>
       <div style="margin-top:16px;padding:14px;background:var(--admin-darker);border-radius:8px;">
-        <p style="font-size:12px;color:var(--gray);">Current Status</p>
+        <p style="font-size:12px;color:var(--gray);"><?= t('admin_current_status') ?></p>
         <?= getStatusBadge($editBooking['status']) ?>
-        <p style="font-size:12px;color:var(--gray);margin-top:10px;">Booked on: <?= formatDate($editBooking['created_at']) ?></p>
+        <p style="font-size:12px;color:var(--gray);margin-top:10px;"><?= t('admin_booked_on') ?>: <?= formatDate($editBooking['created_at']) ?></p>
       </div>
     </div>
   </div>
@@ -90,27 +90,27 @@ require __DIR__ . '/includes/header.php';
 <!-- BOOKINGS LIST -->
 <div class="card">
   <div class="card-header">
-    <span class="card-title">All Bookings (<?= count($bookings) ?>)</span>
+    <span class="card-title"><?= t('admin_all_bookings') ?> (<?= count($bookings) ?>)</span>
   </div>
   <div class="filters-bar">
     <form method="GET" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-      <input type="text" name="q" placeholder="Search name, email, ref..." value="<?= e($search) ?>">
+      <input type="text" name="q" placeholder="<?= t('admin_search_bookings') ?>" value="<?= e($search) ?>">
       <select name="status" onchange="this.form.submit()">
-        <option value="">All Statuses</option>
+        <option value=""><?= t('admin_all_statuses') ?></option>
         <?php foreach(['pending','confirmed','checked_in','checked_out','cancelled'] as $s): ?>
         <option value="<?= $s ?>" <?= $filterStatus===$s?'selected':'' ?>><?= ucfirst(str_replace('_',' ',$s)) ?></option>
         <?php endforeach; ?>
       </select>
       <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-search"></i></button>
-      <?php if($filterStatus||$search): ?><a href="bookings.php" class="btn btn-secondary btn-sm">Clear</a><?php endif; ?>
+      <?php if($filterStatus||$search): ?><a href="bookings.php" class="btn btn-secondary btn-sm"><?= t('admin_clear') ?></a><?php endif; ?>
     </form>
   </div>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>Ref #</th><th>Guest</th><th>Room</th><th>Dates</th><th>Nights</th><th>Total</th><th>Payment</th><th>Status</th><th>Actions</th></tr></thead>
+      <thead><tr><th><?= t('admin_ref') ?></th><th><?= t('admin_guest') ?></th><th><?= t('admin_room') ?></th><th><?= t('admin_dates') ?></th><th><?= t('admin_nights') ?></th><th><?= t('admin_total') ?></th><th><?= t('admin_payment') ?></th><th><?= t('admin_status') ?></th><th><?= t('admin_action') ?></th></tr></thead>
       <tbody>
         <?php if(empty($bookings)): ?>
-        <tr><td colspan="9" style="text-align:center;color:var(--gray);padding:30px;">No bookings found</td></tr>
+        <tr><td colspan="9" style="text-align:center;color:var(--gray);padding:30px;"><?= t('admin_no_bookings') ?></td></tr>
         <?php else: ?>
         <?php foreach($bookings as $b): ?>
         <tr>

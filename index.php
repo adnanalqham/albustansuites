@@ -16,11 +16,25 @@ $testimonials = $db->query("SELECT * FROM testimonials WHERE is_active=1 ORDER B
 $pageTitle = getHotelName() . ' - ' . ($lang==='ar' ? 'فندق 5 نجوم في صنعاء' : '5 Star Hotel in Sanaa');
 $pageDesc  = getSetting('meta_description_' . $lang);
 
-$heroSlides = [
-  ['bg'=>'images/hero-1.jpg','title_ar'=>'جناح فاخر بإطلالة بانورامية','title_en'=>'Panoramic Luxury Suite'],
-  ['bg'=>'images/hero-2.jpg','title_ar'=>'مطعم البستان الفاخر','title_en'=>'Al Bustan Fine Dining'],
-  ['bg'=>'images/hero-3.jpg','title_ar'=>'قاعات اجتماعات عالمية المستوى','title_en'=>'World-Class Meeting Halls'],
-];
+$heroSlides = [];
+for($i=1; $i<=3; $i++) {
+    $bg = getSetting("hero_slide{$i}_image");
+    $title_ar = getSetting("hero_slide{$i}_title_ar");
+    $title_en = getSetting("hero_slide{$i}_title_en");
+    if($bg) {
+        $heroSlides[] = [
+            'bg' => $bg,
+            'title_ar' => $title_ar,
+            'title_en' => $title_en
+        ];
+    }
+}
+// Fallback if somehow settings are deleted
+if(empty($heroSlides)) {
+    $heroSlides = [
+        ['bg'=>'images/hero-1.jpg','title_ar'=>'جناح فاخر بإطلالة بانورامية','title_en'=>'Panoramic Luxury Suite'],
+    ];
+}
 
 require __DIR__ . '/includes/header.php';
 ?>

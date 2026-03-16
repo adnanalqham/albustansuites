@@ -4,7 +4,7 @@ require_once __DIR__ . '/../functions.php';
 requireAdmin();
 $db = getDB();
 $adminPage = 'gallery';
-$adminPageTitle = 'Gallery Management';
+$adminPageTitle = 'admin_gallery_management';
 
 // Delete
 if(isset($_GET['delete']) && is_numeric($_GET['delete'])) {
@@ -56,30 +56,30 @@ require __DIR__ . '/includes/header.php';
 
 <!-- Upload form -->
 <div class="card" style="margin-bottom:24px;">
-  <div class="card-header"><span class="card-title">Upload Images</span></div>
+  <div class="card-header"><span class="card-title"><?= t('admin_upload_images') ?></span></div>
   <form method="POST" enctype="multipart/form-data" class="admin-form">
     <input type="hidden" name="upload" value="1">
     <div class="form-row">
-      <div class="form-group"><label>Title (English)</label><input type="text" name="title_en" placeholder="Optional caption"></div>
-      <div class="form-group"><label>Title (Arabic)</label><input type="text" name="title_ar" placeholder="عنوان اختياري"></div>
+      <div class="form-group"><label><?= t('admin_title_en') ?></label><input type="text" name="title_en" placeholder="Optional caption"></div>
+      <div class="form-group"><label><?= t('admin_title_ar') ?></label><input type="text" name="title_ar" placeholder="عنوان اختياري"></div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label>Category</label>
+      <div class="form-group"><label><?= t('admin_category_table') ?></label>
         <select name="category">
-          <?php foreach($categories as $c):?><option value="<?=$c?>"><?=ucfirst($c)?></option><?php endforeach;?>
+          <?php foreach($categories as $c):?><option value="<?=$c?>"><?=ucfirst(t('admin_'.$c)??$c)?></option><?php endforeach;?>
         </select>
       </div>
-      <div class="form-group"><label>Sort Order</label><input type="number" name="sort_order" value="0"></div>
+      <div class="form-group"><label><?= t('admin_sort_order') ?></label><input type="number" name="sort_order" value="0"></div>
     </div>
-    <div class="form-group"><label>Images (Multiple allowed)</label><input type="file" name="images[]" accept="image/*" multiple required></div>
-    <button type="submit" class="btn btn-primary"><i class="fas fa-upload"></i> Upload Images</button>
+    <div class="form-group"><label><?= t('admin_image') ?> (Multiple allowed)</label><input type="file" name="images[]" accept="image/*" multiple required></div>
+    <button type="submit" class="btn btn-primary"><i class="fas fa-upload"></i> <?= t('admin_upload_images') ?></button>
   </form>
 </div>
 
 <!-- Gallery items -->
 <div class="card">
   <div class="card-header">
-    <span class="card-title">Gallery (<?=count($items)?> items)</span>
+    <span class="card-title"><?= t('nav_gallery') ?> (<?=count($items)?> <?= t('admin_items') ?>)</span>
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
       <a href="gallery.php" class="btn btn-sm <?=!$filterCat?'btn-primary':'btn-secondary'?>">All</a>
       <?php foreach($categories as $c):?>

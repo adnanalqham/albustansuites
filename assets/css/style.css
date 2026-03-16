@@ -15,9 +15,9 @@
 /* ---- CSS Variables ---- */
 :root {
   /* Elegant Champagne Gold */
-  --gold:        #C5A880;
-  --gold-light:  #D4BD9B;
-  --gold-dark:   #A68759;
+  --gold:        #C0A83F;
+  --gold-light:  #D9C67A;
+  --gold-dark:   #9B852B;
   
   /* Deep Charcoal / Midnight Base */
   --dark:        #0A1118;
@@ -35,7 +35,7 @@
   --gray-dark:   #6C7A89;
   
   /* Subtle Borders and Shadows */
-  --border:      rgba(197, 168, 128, 0.15); /* Very soft gold line */
+  --border:      rgba(192, 168, 63, 0.15); /* Very soft gold line */
   --border-light:rgba(255, 255, 255, 0.05);
   --shadow:      0 12px 40px rgba(0,0,0,0.15);
   --shadow-sm:   0 4px 15px rgba(0,0,0,0.08);

@@ -53,7 +53,12 @@ require __DIR__ . '/includes/header.php';
     </div>
     <?php else: ?>
     <div class="rooms-grid">
-      <?php foreach($rooms as $room): ?>
+      <?php 
+      try {
+        foreach($rooms as $room): 
+          $desc = $room['short_desc_'.$lang] ?? '';
+          $desc = function_exists('mb_substr') ? mb_substr($desc, 0, 120) : substr($desc, 0, 120);
+      ?>
       <div class="room-card animate-on-scroll">
         <div class="room-card-img">
           <img src="<?= SITE_URL ?>/<?= e($room['main_image'] ?? 'images/room-default.jpg') ?>" alt="<?= e($room['name_'.$lang]) ?>" loading="lazy">
@@ -62,25 +67,32 @@ require __DIR__ . '/includes/header.php';
         <div class="room-card-body">
           <h3><?= e($room['name_'.$lang]) ?></h3>
           <div class="room-meta">
-            <?php if($room['size_sqm']): ?><span><i class="fas fa-ruler-combined"></i><?= $room['size_sqm'] ?> <?= t('sqm') ?></span><?php endif; ?>
-            <span><i class="fas fa-users"></i><?= $room['capacity_adults'] ?> <?= t('adults') ?></span>
-            <?php if($room['view_type_'.$lang]): ?><span><i class="fas fa-mountain"></i><?= e($room['view_type_'.$lang]) ?></span><?php endif; ?>
+            <?php if(!empty($room['size_sqm'])): ?><span><i class="fas fa-ruler-combined"></i><?= $room['size_sqm'] ?> <?= t('sqm') ?></span><?php endif; ?>
+            <?php if(!empty($room['capacity_adults'])): ?><span><i class="fas fa-users"></i><?= $room['capacity_adults'] ?> <?= t('adults') ?></span><?php endif; ?>
+            <?php if(!empty($room['view_type_'.$lang])): ?><span><i class="fas fa-mountain"></i><?= e($room['view_type_'.$lang]) ?></span><?php endif; ?>
           </div>
-          <p class="room-desc"><?= e(mb_substr($room['short_desc_'.$lang]??'',0,120)) ?>...</p>
+          <p class="room-desc"><?= e($desc) ?>...</p>
           <div class="room-card-footer">
             <div class="room-price">
               <span class="from"><?= $lang==='ar'?'يبدأ من':'Starting'?></span>
-              <span class="amount"><?= formatPrice($room['price_per_night'], $room['currency']) ?></span>
+              <span class="amount"><?= formatPrice((float)($room['price_per_night']??0), $room['currency']??'USD') ?></span>
               <span class="per"><?= t('per_night') ?></span>
             </div>
             <div style="display:flex;gap:8px;">
-              <a href="room-detail.php?slug=<?= e($room['slug']) ?>" class="btn btn-outline btn-sm"><i class="fas fa-eye"></i></a>
-              <a href="booking.php?room=<?= e($room['slug']) ?>" class="btn btn-primary btn-sm"><?= t('nav_book_now') ?></a>
+              <a href="room-detail.php?slug=<?= e($room['slug']??'') ?>" class="btn btn-outline btn-sm"><i class="fas fa-eye"></i></a>
+              <a href="booking.php?room=<?= e($room['slug']??'') ?>" class="btn btn-primary btn-sm"><?= t('nav_book_now') ?></a>
             </div>
           </div>
         </div>
       </div>
-      <?php endforeach; ?>
+      <?php 
+        endforeach; 
+      } catch (Exception $e) {
+        echo "<div style='color:red;padding:20px;text-align:center;'>Error loading rooms: " . e($e->getMessage()) . "</div>";
+      } catch (TypeError $e) {
+        echo "<div style='color:red;padding:20px;text-align:center;'>Type Error: " . e($e->getMessage()) . "</div>";
+      }
+      ?>
     </div>
     <?php endif; ?>
   </div>

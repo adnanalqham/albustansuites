@@ -4,7 +4,7 @@ require_once __DIR__ . '/../functions.php';
 requireAdmin();
 $db = getDB();
 $adminPage = 'restaurant';
-$adminPageTitle = 'Menu Management';
+$adminPageTitle = 'admin_menu_management';
 
 // Delete item
 if(isset($_GET['delete']) && is_numeric($_GET['delete'])) {
@@ -41,40 +41,40 @@ require __DIR__ . '/includes/header.php';
 <?php $f=getFlash();if($f):?><div class="admin-flash <?=$f['type']?>"><?=e($f['message'])?></div><?php endif;?>
 <?php if($showForm): ?>
 <div class="card">
-  <div class="card-header"><span class="card-title"><?= $editing?'Edit Item':'Add Menu Item'?></span><a href="restaurant.php" class="btn btn-sm btn-secondary"><i class="fas fa-arrow-left"></i> Back</a></div>
+  <div class="card-header"><span class="card-title"><?= $editing ? t('admin_edit_item') : t('admin_add_menu_item') ?></span><a href="restaurant.php" class="btn btn-sm btn-secondary"><i class="fas fa-arrow-left"></i> <?= t('admin_back') ?></a></div>
   <form method="POST" enctype="multipart/form-data" class="admin-form">
     <input type="hidden" name="save_item" value="1">
     <?php if($editing):?><input type="hidden" name="item_id" value="<?=$editing['id']?>"><input type="hidden" name="existing_img" value="<?=e($editing['image']??'')?>">
     <?php endif;?>
     <div class="form-row">
-      <div class="form-group"><label>Category</label><select name="category_id"><?php foreach($cats as $c):?><option value="<?=$c['id']?>" <?=($editing['category_id']??0)==$c['id']?'selected':''?>><?=e($c['name_en'])?></option><?php endforeach;?></select></div>
-      <div class="form-group"><label>Price</label><input type="number" name="price" value="<?=$editing['price']??''?>" step="0.01" required></div>
+      <div class="form-group"><label><?= t('admin_category_table') ?></label><select name="category_id"><?php foreach($cats as $c):?><option value="<?=$c['id']?>" <?=($editing['category_id']??0)==$c['id']?'selected':''?>><?=e($c['name_en'])?></option><?php endforeach;?></select></div>
+      <div class="form-group"><label><?= t('admin_price_night') ?></label><input type="number" name="price" value="<?=$editing['price']??''?>" step="0.01" required></div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label>Name (English)</label><input type="text" name="name_en" value="<?=e($editing['name_en']??'')?>" required></div>
-      <div class="form-group"><label>Name (Arabic)</label><input type="text" name="name_ar" value="<?=e($editing['name_ar']??'')?>" required></div>
+      <div class="form-group"><label><?= t('admin_amenity_name_en') ?></label><input type="text" name="name_en" value="<?=e($editing['name_en']??'')?>" required></div>
+      <div class="form-group"><label><?= t('admin_amenity_name_ar') ?></label><input type="text" name="name_ar" value="<?=e($editing['name_ar']??'')?>" required></div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label>Description (English)</label><textarea name="description_en"><?=e($editing['description_en']??'')?></textarea></div>
-      <div class="form-group"><label>Description (Arabic)</label><textarea name="description_ar"><?=e($editing['description_ar']??'')?></textarea></div>
+      <div class="form-group"><label><?= t('admin_desc_en') ?></label><textarea name="description_en"><?=e($editing['description_en']??'')?></textarea></div>
+      <div class="form-group"><label><?= t('admin_desc_ar') ?></label><textarea name="description_ar"><?=e($editing['description_ar']??'')?></textarea></div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label>Image</label><?php if(!empty($editing['image'])):?><img src="<?=SITE_URL?>/<?=e($editing['image'])?>" style="width:80px;height:60px;object-fit:cover;border-radius:6px;margin-bottom:8px;display:block;"><?php endif;?><input type="file" name="image" accept="image/*"></div>
-      <div class="form-group"><label>Sort Order</label><input type="number" name="sort_order" value="<?=$editing['sort_order']??0?>"></div>
+      <div class="form-group"><label><?= t('admin_image') ?></label><?php if(!empty($editing['image'])):?><img src="<?=SITE_URL?>/<?=e($editing['image'])?>" style="width:80px;height:60px;object-fit:cover;border-radius:6px;margin-bottom:8px;display:block;"><?php endif;?><input type="file" name="image" accept="image/*"></div>
+      <div class="form-group"><label><?= t('admin_sort_order') ?></label><input type="number" name="sort_order" value="<?=$editing['sort_order']??0?>"></div>
     </div>
     <div style="display:flex;gap:20px;margin-bottom:16px;">
-      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" name="is_vegetarian" <?=($editing['is_vegetarian']??0)?'checked':''?>> Vegetarian</label>
-      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" name="is_featured" <?=($editing['is_featured']??0)?'checked':''?>> Featured</label>
-      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" name="is_available" value="1" <?=($editing['is_available']??1)?'checked':''?>> Available</label>
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" name="is_vegetarian" <?=($editing['is_vegetarian']??0)?'checked':''?>> <?= t('admin_vegetarian') ?></label>
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" name="is_featured" <?=($editing['is_featured']??0)?'checked':''?>> <?= t('admin_featured_room') ?></label>
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" name="is_available" value="1" <?=($editing['is_available']??1)?'checked':''?>> <?= t('admin_available') ?></label>
     </div>
-    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Item</button>
+    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> <?= t('admin_save_item') ?></button>
   </form>
 </div>
 <?php else: ?>
 <div class="card">
-  <div class="card-header"><span class="card-title">Menu Items (<?=count($items)?>)</span><a href="?action=add" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Add Item</a></div>
+  <div class="card-header"><span class="card-title"><?= t('admin_menu_items') ?> (<?=count($items)?>)</span><a href="?action=add" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> <?= t('admin_add_item') ?></a></div>
   <div class="table-wrap"><table>
-    <thead><tr><th>Image</th><th>Name</th><th>Category</th><th>Price</th><th>Flags</th><th>Actions</th></tr></thead>
+    <thead><tr><th><?= t('admin_image') ?></th><th><?= t('admin_name') ?></th><th><?= t('admin_category_table') ?></th><th><?= t('admin_price_night') ?></th><th><?= t('admin_flags') ?></th><th><?= t('admin_action') ?></th></tr></thead>
     <tbody>
       <?php foreach($items as $it):?>
       <tr>

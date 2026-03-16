@@ -12,8 +12,13 @@ $stmt->execute([$slug]);
 $room = $stmt->fetch();
 if(!$room) { header('Location: rooms.php'); exit; }
 
-$amenities = decodeJson($room['amenities_'.$lang]);
-$images    = decodeJson($room['images']);
+$roomId = (int)$room['id'];
+try {
+    $amenities = $db->query("SELECT a.name_{$lang} as name, a.icon FROM room_amenities ra JOIN amenities a ON ra.amenity_id = a.id WHERE ra.room_id = $roomId")->fetchAll();
+} catch (Exception $e) {
+    $amenities = [];
+}
+$images    = decodeJson($room['images']??'');
 if(empty($images) && $room['main_image']) $images = [$room['main_image']];
 
 $pageTitle = e($room['name_'.$lang]) . ' - ' . getHotelName();
@@ -65,7 +70,7 @@ require __DIR__ . '/includes/header.php';
         <h2 style="font-family:var(--font-serif);color:var(--cream);font-size:28px;margin:32px 0 16px;"><?= t('amenities') ?></h2>
         <div class="amenities-grid">
           <?php foreach($amenities as $a): ?>
-          <div class="amenity-item"><i class="fas fa-check-circle"></i><?= e($a) ?></div>
+          <div class="amenity-item"><i class="<?= e($a['icon']??'fas fa-check-circle') ?>"></i><?= e($a['name']) ?></div>
           <?php endforeach; ?>
         </div>
         <?php endif; ?>

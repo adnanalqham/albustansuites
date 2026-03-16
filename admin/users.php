@@ -4,7 +4,7 @@ require_once __DIR__ . '/../functions.php';
 requireAdmin();
 $db = getDB();
 $adminPage = 'users';
-$adminPageTitle = 'Guest Accounts';
+$adminPageTitle = 'admin_guest_accounts';
 
 $users = $db->query("SELECT u.*, (SELECT COUNT(*) FROM bookings WHERE user_id=u.id) as booking_count FROM users u ORDER BY u.created_at DESC")->fetchAll();
 
@@ -12,11 +12,11 @@ require __DIR__ . '/includes/header.php';
 ?>
 <div class="card">
   <div class="card-header">
-    <span class="card-title">All Guests (<?= count($users) ?>)</span>
+    <span class="card-title"><?= t('admin_all_guests') ?> (<?= count($users) ?>)</span>
   </div>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Bookings</th><th>Joined</th></tr></thead>
+      <thead><tr><th><?= t('admin_id') ?></th><th><?= t('admin_name') ?></th><th><?= t('admin_email') ?></th><th><?= t('admin_phone') ?></th><th><?= t('admin_bookings') ?></th><th><?= t('admin_joined') ?></th></tr></thead>
       <tbody>
         <?php foreach($users as $u):?>
         <tr>
@@ -24,7 +24,7 @@ require __DIR__ . '/includes/header.php';
           <td><strong><?=e($u['name'])?></strong></td>
           <td><?=e($u['email'])?></td>
           <td><?=e($u['phone']??'—')?></td>
-          <td><a href="bookings.php?q=<?=e($u['email'])?>" class="badge badge-info" style="cursor:pointer;"><?=$u['booking_count']?> bookings</a></td>
+          <td><a href="bookings.php?q=<?=e($u['email'])?>" class="badge badge-info" style="cursor:pointer;"><?=$u['booking_count']?> <?= t('admin_bookings') ?></a></td>
           <td><small><?=formatDate($u['created_at'])?></small></td>
         </tr>
         <?php endforeach;?>

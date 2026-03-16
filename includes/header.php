@@ -6,6 +6,7 @@ $dir  = langDir();
 $hotelName = getHotelName();
 $isRTL = isRTL();
 $currentPage = basename($_SERVER['PHP_SELF'], '.php');
+$siteLogo = getSetting('site_logo', 'images/logo.jpg');
 ?>
 <!DOCTYPE html>
 <html lang="<?= $lang ?>" dir="<?= $dir ?>">
@@ -14,8 +15,8 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?= e($pageTitle ?? $hotelName) ?></title>
 <meta name="description" content="<?= e($pageDesc ?? getSetting('meta_description_' . $lang)) ?>">
-<link rel="icon" type="image/png" href="<?= SITE_URL ?>/images/logo.png">
-<link rel="apple-touch-icon" href="<?= SITE_URL ?>/images/logo.png">
+<link rel="icon" type="image/png" href="<?= SITE_URL ?>/<?= e($siteLogo) ?>">
+<link rel="apple-touch-icon" href="<?= SITE_URL ?>/<?= e($siteLogo) ?>">
 <link rel="manifest" href="<?= SITE_URL ?>/manifest.json">
 <meta name="theme-color" content="#0D1B2A">
 
@@ -24,14 +25,14 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
 <meta property="og:url" content="<?= SITE_URL ?>/<?= $currentPage ?>.php">
 <meta property="og:title" content="<?= e($pageTitle ?? $hotelName) ?>">
 <meta property="og:description" content="<?= e($pageDesc ?? getSetting('meta_description_' . $lang)) ?>">
-<meta property="og:image" content="<?= SITE_URL ?>/images/logo.png">
+<meta property="og:image" content="<?= SITE_URL ?>/<?= e($siteLogo) ?>">
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="<?= SITE_URL ?>/<?= $currentPage ?>.php">
 <meta property="twitter:title" content="<?= e($pageTitle ?? $hotelName) ?>">
 <meta property="twitter:description" content="<?= e($pageDesc ?? getSetting('meta_description_' . $lang)) ?>">
-<meta property="twitter:image" content="<?= SITE_URL ?>/images/logo.png">
+<meta property="twitter:image" content="<?= SITE_URL ?>/<?= e($siteLogo) ?>">
 
 <!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -52,7 +53,7 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
 <!-- Page Loader -->
 <div class="page-loader" id="pageLoader">
   <div class="loader-inner">
-    <img src="<?= SITE_URL ?>/images/logo.png" alt="<?= e($hotelName) ?>" class="loader-logo" onerror="this.style.display='none'">
+    <img src="<?= SITE_URL ?>/<?= e($siteLogo) ?>" alt="<?= e($hotelName) ?>" class="loader-logo" onerror="this.style.display='none'">
     <div class="loader-dots"><span></span><span></span><span></span></div>
   </div>
 </div>
@@ -81,7 +82,7 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
 <nav class="main-nav" id="mainNav">
   <div class="container">
     <a href="<?= SITE_URL ?>/index.php" class="nav-logo">
-      <img src="<?= SITE_URL ?>/images/logo.png" alt="<?= e($hotelName) ?>" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'logo-text\'><?= e($hotelName) ?></span>'">
+      <img src="<?= SITE_URL ?>/<?= e($siteLogo) ?>" alt="<?= e($hotelName) ?>" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'logo-text\'><?= e($hotelName) ?></span>'">
     </a>
 
     <button class="nav-toggle" id="navToggle" aria-label="<?= t('nav_home') ?>">

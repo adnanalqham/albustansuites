@@ -4,7 +4,7 @@ require_once __DIR__ . '/../functions.php';
 requireAdmin();
 $db = getDB();
 $adminPage = 'dashboard';
-$adminPageTitle = 'Dashboard';
+$adminPageTitle = 'admin_dashboard';
 
 // Stats
 $totalBookings   = $db->query("SELECT COUNT(*) FROM bookings")->fetchColumn();
@@ -31,10 +31,10 @@ require __DIR__ . '/includes/header.php';
 
 <!-- Stats -->
 <div class="stats-grid">
-  <div class="stat-card"><div class="stat-info"><small>Total Revenue</small><h3>$<?= number_format($totalRevenue) ?></h3><p>All time</p></div><div class="stat-icon gold"><i class="fas fa-dollar-sign"></i></div></div>
-  <div class="stat-card"><div class="stat-info"><small>Total Bookings</small><h3><?= $totalBookings ?></h3><p><?= $pendingBookings ?> pending</p></div><div class="stat-icon blue"><i class="fas fa-calendar-check"></i></div></div>
-  <div class="stat-card"><div class="stat-info"><small>Registered Guests</small><h3><?= $totalUsers ?></h3><p>Total accounts</p></div><div class="stat-icon green"><i class="fas fa-users"></i></div></div>
-  <div class="stat-card"><div class="stat-info"><small>Unread Messages</small><h3><?= $unreadMsgs ?></h3><p>Need response</p></div><div class="stat-icon red"><i class="fas fa-envelope"></i></div></div>
+  <div class="stat-card"><div class="stat-info"><small><?= t('admin_total_revenue') ?></small><h3>$<?= number_format($totalRevenue) ?></h3><p><?= t('admin_all_time') ?></p></div><div class="stat-icon gold"><i class="fas fa-dollar-sign"></i></div></div>
+  <div class="stat-card"><div class="stat-info"><small><?= t('admin_total_bookings') ?></small><h3><?= $totalBookings ?></h3><p><?= $pendingBookings ?> <?= t('admin_pending') ?></p></div><div class="stat-icon blue"><i class="fas fa-calendar-check"></i></div></div>
+  <div class="stat-card"><div class="stat-info"><small><?= t('admin_registered_guests') ?></small><h3><?= $totalUsers ?></h3><p><?= t('admin_total_accounts') ?></p></div><div class="stat-icon green"><i class="fas fa-users"></i></div></div>
+  <div class="stat-card"><div class="stat-info"><small><?= t('admin_unread_messages') ?></small><h3><?= $unreadMsgs ?></h3><p><?= t('admin_need_response') ?></p></div><div class="stat-icon red"><i class="fas fa-envelope"></i></div></div>
 </div>
 
 <!-- Today's Activity -->
@@ -42,41 +42,41 @@ require __DIR__ . '/includes/header.php';
   <div class="card" style="padding:18px;text-align:center;">
     <i class="fas fa-arrow-down" style="color:var(--success);font-size:22px;margin-bottom:8px;display:block;"></i>
     <strong style="font-size:28px;color:var(--cream);"><?= $todayCheckIn ?></strong>
-    <p style="color:var(--gray);font-size:13px;">Today's Check-ins</p>
+    <p style="color:var(--gray);font-size:13px;"><?= t('admin_today_checkins') ?></p>
   </div>
   <div class="card" style="padding:18px;text-align:center;">
     <i class="fas fa-arrow-up" style="color:var(--info);font-size:22px;margin-bottom:8px;display:block;"></i>
     <strong style="font-size:28px;color:var(--cream);"><?= $todayCheckOut ?></strong>
-    <p style="color:var(--gray);font-size:13px;">Today's Check-outs</p>
+    <p style="color:var(--gray);font-size:13px;"><?= t('admin_today_checkouts') ?></p>
   </div>
   <div class="card" style="padding:18px;text-align:center;">
     <i class="fas fa-bed" style="color:var(--gold);font-size:22px;margin-bottom:8px;display:block;"></i>
     <strong style="font-size:28px;color:var(--cream);"><?= $totalRooms ?></strong>
-    <p style="color:var(--gray);font-size:13px;">Total Rooms</p>
+    <p style="color:var(--gray);font-size:13px;"><?= t('admin_total_rooms') ?></p>
   </div>
 </div>
 
 <!-- Quick Actions -->
 <div class="card" style="margin-bottom:24px;">
-  <div class="card-header"><span class="card-title">Quick Actions</span></div>
+  <div class="card-header"><span class="card-title"><?= t('admin_quick_actions') ?></span></div>
   <div style="display:flex;gap:12px;flex-wrap:wrap;">
-    <a href="bookings.php?status=pending" class="btn btn-primary"><i class="fas fa-clock"></i> Pending Bookings (<?= $pendingBookings ?>)</a>
-    <a href="rooms.php?action=add" class="btn btn-info"><i class="fas fa-plus"></i> Add New Room</a>
-    <a href="offers.php?action=add" class="btn btn-success"><i class="fas fa-tag"></i> Add Offer</a>
-    <a href="messages.php" class="btn btn-secondary"><i class="fas fa-envelope"></i> View Messages (<?= $unreadMsgs ?>)</a>
-    <a href="settings.php" class="btn btn-secondary"><i class="fas fa-cog"></i> Settings</a>
+    <a href="bookings.php?status=pending" class="btn btn-primary"><i class="fas fa-clock"></i> <?= t('admin_pending_bookings') ?> (<?= $pendingBookings ?>)</a>
+    <a href="rooms.php?action=add" class="btn btn-info"><i class="fas fa-plus"></i> <?= t('admin_add_new_room') ?></a>
+    <a href="offers.php?action=add" class="btn btn-success"><i class="fas fa-tag"></i> <?= t('admin_add_offer') ?></a>
+    <a href="messages.php" class="btn btn-secondary"><i class="fas fa-envelope"></i> <?= t('admin_view_messages') ?> (<?= $unreadMsgs ?>)</a>
+    <a href="settings.php" class="btn btn-secondary"><i class="fas fa-cog"></i> <?= t('admin_settings') ?></a>
   </div>
 </div>
 
 <!-- Recent Bookings -->
 <div class="card">
   <div class="card-header">
-    <span class="card-title">Recent Bookings</span>
-    <a href="bookings.php" class="btn btn-sm btn-secondary">View All</a>
+    <span class="card-title"><?= t('admin_recent_bookings') ?></span>
+    <a href="bookings.php" class="btn btn-sm btn-secondary"><?= t('admin_view_all') ?></a>
   </div>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>Ref #</th><th>Guest</th><th>Room</th><th>Check-in</th><th>Check-out</th><th>Total</th><th>Status</th><th>Actions</th></tr></thead>
+      <thead><tr><th><?= t('admin_ref') ?></th><th><?= t('admin_guest') ?></th><th><?= t('admin_room') ?></th><th><?= t('admin_checkin') ?></th><th><?= t('admin_checkout') ?></th><th><?= t('admin_total') ?></th><th><?= t('admin_status') ?></th><th><?= t('admin_action') ?></th></tr></thead>
       <tbody>
         <?php foreach($recentBookings as $b): ?>
         <tr>

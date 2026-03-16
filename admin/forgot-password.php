@@ -11,7 +11,7 @@ $error   = '';
 // ── Step 1: Enter email ─────────────────────────────────────────────
 if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['email'])) {
     $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
-    if(!$email) { $error = 'Please enter a valid email address.'; }
+    if(!$email) { $error = t('admin_invalid_email'); }
     else {
         $db   = getDB();
         $stmt = $db->prepare("SELECT id FROM admins WHERE email=? LIMIT 1");
@@ -56,7 +56,7 @@ if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['otp'])) {
         $_SESSION['reset_verified_id'] = $admin['id'];
         header('Location: forgot-password.php?step=3'); exit;
     } else {
-        $error = 'Invalid or expired code. Please try again.';
+        $error = t('admin_invalid_code');
         $step  = 2;
     }
 }
@@ -68,10 +68,10 @@ if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['new_password'])) {
     $pw  = $_POST['new_password'] ?? '';
     $pw2 = $_POST['confirm_password'] ?? '';
     if(strlen($pw) < 6) {
-        $error = 'Password must be at least 6 characters.';
+        $error = t('admin_password_min_length');
         $step  = 3;
     } elseif($pw !== $pw2) {
-        $error = 'Passwords do not match.';
+        $error = t('admin_passwords_mismatch');
         $step  = 3;
     } else {
         $hash = password_hash($pw, PASSWORD_BCRYPT);
@@ -91,7 +91,7 @@ $devOtp = $_SESSION['reset_otp_dev'] ?? null;
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reset Password - Al Bustan Admin</title>
+<title><?= t('admin_reset_password_title') ?></title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/admin.css">
@@ -134,7 +134,7 @@ a.back:hover{text-decoration:underline;}
 <div class="card">
   <div class="card-logo">
     <img src="../images/logo.png" alt="Al Bustan" onerror="this.style.display='none'">
-    <h1>Reset Password</h1>
+    <h1><?= t('admin_reset_password') ?></h1>
     <p>Al Bustan Luxurious Suites</p>
   </div>
 
@@ -156,18 +156,18 @@ a.back:hover{text-decoration:underline;}
   <?php endif; ?>
 
   <?php if($error): ?>
-  <div class="error-box"><i class="fas fa-exclamation-circle"></i><?= htmlspecialchars($error) ?></div>
+  <div class="error-box"><i class="fas fa-exclamation-circle"></i><?= $error ?></div>
   <?php endif; ?>
 
   <!-- ── STEP 1 ── -->
   <?php if($step === 1): ?>
   <form method="POST">
     <div class="form-group">
-      <label>Admin Email Address</label>
+      <label><?= t('admin_email_address') ?></label>
       <input class="plain" type="email" name="email" required autofocus placeholder="admin@albustan.com">
     </div>
     <button type="submit" class="btn btn-primary btn-full">
-      <i class="fas fa-paper-plane"></i> Send Reset Code
+      <i class="fas fa-paper-plane"></i> <?= t('admin_send_code') ?>
     </button>
   </form>
 
@@ -176,12 +176,12 @@ a.back:hover{text-decoration:underline;}
   <?php if($devOtp): ?>
   <div class="otp-hint"><i class="fas fa-info-circle"></i> <strong>DEV MODE — Your code: <?= $devOtp ?></strong> (Remove this in production)</div>
   <?php else: ?>
-  <p style="font-size:13px;color:var(--gray);margin-bottom:16px;">Enter the 6-digit code sent to <strong style="color:var(--cream);"><?= htmlspecialchars($_SESSION['reset_email']??'your email') ?></strong></p>
+  <p style="font-size:13px;color:var(--gray);margin-bottom:16px;"><?= t('admin_enter_code') ?> <strong style="color:var(--cream);"><?= htmlspecialchars($_SESSION['reset_email']??'your email') ?></strong></p>
   <?php endif; ?>
   <form method="POST">
     <input type="hidden" name="otp" id="otp-hidden">
     <div class="form-group">
-      <label>6-Digit Code</label>
+      <label><?= t('admin_6_digit_code') ?></label>
       <div class="otp-boxes" style="display:flex;gap:8px;justify-content:center;margin-bottom:4px;">
         <?php for($i=0;$i<6;$i++): ?>
         <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]"
@@ -190,7 +190,7 @@ a.back:hover{text-decoration:underline;}
       </div>
     </div>
     <button type="submit" id="otp-btn" class="btn btn-primary btn-full" style="margin-top:8px;">
-      <i class="fas fa-check-circle"></i> Verify Code
+      <i class="fas fa-check-circle"></i> <?= t('admin_verify_code') ?>
     </button>
   </form>
 
@@ -198,14 +198,14 @@ a.back:hover{text-decoration:underline;}
   <?php elseif($step === 3): ?>
   <form method="POST">
     <div class="form-group">
-      <label>New Password</label>
+      <label><?= t('admin_new_password') ?></label>
       <div class="input-wrap">
         <input type="password" name="new_password" id="pw1" required placeholder="Min 6 characters" autocomplete="new-password">
         <button type="button" class="toggle-pw" onclick="togglePw('pw1','eye1')"><i id="eye1" class="fas fa-eye"></i></button>
       </div>
     </div>
     <div class="form-group">
-      <label>Confirm New Password</label>
+      <label><?= t('admin_confirm_password') ?></label>
       <div class="input-wrap">
         <input type="password" name="confirm_password" id="pw2" required placeholder="Repeat password" autocomplete="new-password">
         <button type="button" class="toggle-pw" onclick="togglePw('pw2','eye2')"><i id="eye2" class="fas fa-eye"></i></button>
@@ -213,7 +213,7 @@ a.back:hover{text-decoration:underline;}
     </div>
     <div id="pw-match" style="font-size:12px;margin-bottom:12px;min-height:18px;"></div>
     <button type="submit" class="btn btn-primary btn-full">
-      <i class="fas fa-lock"></i> Reset Password
+      <i class="fas fa-lock"></i> <?= t('admin_reset_password') ?>
     </button>
   </form>
 
@@ -221,17 +221,17 @@ a.back:hover{text-decoration:underline;}
   <?php else: ?>
   <div class="success-box">
     <i class="fas fa-check-circle"></i>
-    <h2>Password Reset!</h2>
-    <p>Your admin password has been updated successfully.</p>
+    <h2><?= t('admin_reset_password') ?>!</h2>
+    <p><?= t('admin_password_updated') ?></p>
     <a href="login.php" class="btn btn-primary" style="margin-top:24px;display:inline-flex;">
-      <i class="fas fa-sign-in-alt"></i> Sign In Now
+      <i class="fas fa-sign-in-alt"></i> <?= t('admin_sign_in_now') ?>
     </a>
   </div>
   <?php endif; ?>
 
   <?php if($step < 4): ?>
   <div style="text-align:center;margin-top:20px;">
-    <a href="login.php" class="back"><i class="fas fa-arrow-left"></i> Back to Login</a>
+    <a href="login.php" class="back"><i class="fas fa-arrow-left"></i> <?= t('admin_back_login') ?></a>
   </div>
   <?php endif; ?>
 </div>
