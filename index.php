@@ -98,6 +98,42 @@ require __DIR__ . '/includes/header.php';
   </div>
 </section>
 
+<?php
+// Fetch gallery images
+$hotelGallery = $db->query("SELECT * FROM gallery WHERE is_active=1 ORDER BY sort_order ASC, id DESC")->fetchAll();
+if(count($hotelGallery) > 0):
+?>
+<!-- ===== IMAGE GALLERY ===== -->
+<section class="section" id="home-gallery">
+  <div class="container">
+    <div class="section-title animate-on-scroll">
+      <div class="subtitle"><?= $lang==='ar'?'جولة في الفندق':'Hotel Tour'?></div>
+      <h2><?= $lang==='ar'?'معرض صور الفندق':'Hotel Image Gallery'?></h2>
+    </div>
+    
+    <div class="gallery-slider-wrap animate-on-scroll">
+        <button class="gallery-arrow prev-arrow" onclick="scrollGallery(-1)" aria-label="Previous image"><i class="fas fa-chevron-left"></i></button>
+        <div class="gallery-slider" id="hotelGallerySlider">
+            <?php foreach($hotelGallery as $img): ?>
+            <div class="gallery-slide-item">
+                <div class="gallery-img-box">
+                    <img src="<?= SITE_URL ?>/<?= e($img['image']) ?>" alt="<?= e($img['title_'.$lang] ?? 'Hotel Image') ?>" loading="lazy">
+                </div>
+                <?php if(!empty($img['title_'.$lang]) || !empty($img['description_'.$lang])): ?>
+                <div class="gallery-caption">
+                    <?php if(!empty($img['title_'.$lang])): ?><h4><?= e($img['title_'.$lang]) ?></h4><?php endif; ?>
+                    <?php if(!empty($img['description_'.$lang])): ?><p><?= e($img['description_'.$lang]) ?></p><?php endif; ?>
+                </div>
+                <?php endif; ?>
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <button class="gallery-arrow next-arrow" onclick="scrollGallery(1)" aria-label="Next image"><i class="fas fa-chevron-right"></i></button>
+    </div>
+  </div>
+</section>
+<?php endif; ?>
+
 <!-- ===== WHY CHOOSE US ===== -->
 <section class="section" id="features">
   <div class="container">
@@ -202,19 +238,19 @@ require __DIR__ . '/includes/header.php';
   <div class="container">
     <div class="restaurant-inner">
       <div class="restaurant-img animate-on-scroll">
-        <img src="<?= SITE_URL ?>/images/restaurant.jpg" alt="<?= $lang==='ar'?'مطعم البستان':'Al Bustan Restaurant'?>">
+        <img src="<?= SITE_URL ?>/<?= e(getSetting('restaurant_image', 'images/restaurant.jpg')) ?>" alt="<?= e(getSetting('restaurant_title_'.$lang) ?: 'Restaurant') ?>" loading="lazy">
       </div>
       <div class="restaurant-content">
         <div class="section-title animate-on-scroll">
-          <div class="subtitle"><i class="fas fa-utensils"></i> <?= $lang==='ar'?'تجربة طعام فاخرة':'Fine Dining Experience'?></div>
-          <h2><?= t('our_restaurant') ?></h2>
-          <p><?= t('restaurant_desc') ?></p>
+          <div class="subtitle"><i class="fas fa-utensils"></i> <?= e(getSetting('restaurant_subtitle_'.$lang) ?: ($lang==='ar'?'تجربة طعام فاخرة':'Fine Dining Experience')) ?></div>
+          <h2><?= e(getSetting('restaurant_title_'.$lang) ?: t('our_restaurant')) ?></h2>
+          <p><?= e(getSetting('restaurant_desc_'.$lang) ?: t('restaurant_desc')) ?></p>
         </div>
         <ul class="restaurant-hours animate-on-scroll">
-          <li><i class="fas fa-coffee"></i> <?= $lang==='ar'?'الإفطار: 6:30 صباحاً - 10:30 صباحاً':'Breakfast: 6:30 AM - 10:30 AM'?></li>
-          <li><i class="fas fa-sun"></i><?= $lang==='ar'?'الغداء: 12:30 ظهراً - 3:00 مساءً':'Lunch: 12:30 PM - 3:00 PM'?></li>
-          <li><i class="fas fa-moon"></i><?= $lang==='ar'?'العشاء: 7:00 مساءً - 11:00 مساءً':'Dinner: 7:00 PM - 11:00 PM'?></li>
-          <li><i class="fas fa-clock"></i><?= $lang==='ar'?'غرفة الخدمة: 24 ساعة':'Room Service: 24 Hours'?></li>
+          <li><i class="fas fa-coffee"></i> <?= $lang==='ar'?'الإفطار:':'Breakfast:'?> <?= e(getSetting('restaurant_breakfast', '6:30 AM - 10:30 AM')) ?></li>
+          <li><i class="fas fa-sun"></i><?= $lang==='ar'?'الغداء:':'Lunch:'?> <?= e(getSetting('restaurant_lunch', '12:30 PM - 3:00 PM')) ?></li>
+          <li><i class="fas fa-moon"></i><?= $lang==='ar'?'العشاء:':'Dinner:'?> <?= e(getSetting('restaurant_dinner', '7:00 PM - 11:00 PM')) ?></li>
+          <li><i class="fas fa-clock"></i><?= $lang==='ar'?'خدمة الغرف:':'Room Service:'?> <?= e(getSetting('restaurant_service', '24 Hours')) ?></li>
         </ul>
         <div class="hero-actions animate-on-scroll">
           <a href="menu.php" class="btn btn-primary"><i class="fas fa-book-open"></i> <?= t('explore_menu') ?></a>
@@ -346,7 +382,80 @@ require __DIR__ . '/includes/header.php';
 .hero-indicators{position:absolute;bottom:50px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:2;}
 .hero-indicator{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.4);border:none;cursor:pointer;transition:all 0.3s;}
 .hero-indicator.active{width:28px;border-radius:4px;background:var(--gold);}
-@media(max-width:768px){.stats-grid{grid-template-columns:1fr 1fr;gap:20px;}.stat-num{font-size:28px;}}
+
+/* Gallery Slider */
+.gallery-slider-wrap { position: relative; display: flex; align-items: center; direction: ltr; /* Keeps scroll logic straightforward */ }
+.gallery-slider {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    gap: 20px;
+    padding: 10px 0;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.gallery-slider::-webkit-scrollbar { display: none; }
+.gallery-slide-item {
+    flex: 0 0 calc(45% - 14px);
+    scroll-snap-align: start;
+    background: var(--dark-2);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    direction: <?= $lang==='ar'?'rtl':'ltr' ?>;
+}
+.gallery-img-box { width: 100%; height: 320px; overflow:hidden; }
+.gallery-img-box img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+.gallery-slide-item:hover .gallery-img-box img { transform: scale(1.08); }
+.gallery-caption { padding: 16px; text-align: center; }
+.gallery-caption h4 { color: var(--gold); margin-bottom: 6px; font-size: 18px; }
+.gallery-caption p { color: var(--gray); font-size: 14px; margin: 0; line-height: 1.5; }
+
+.gallery-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: var(--dark);
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: all 0.2s;
+}
+.gallery-arrow:hover { background: #fff; transform: translateY(-50%) scale(1.1); }
+.prev-arrow { left: -22px; }
+.next-arrow { right: -22px; }
+
+@media(max-width:992px){
+    .stats-grid{grid-template-columns:1fr 1fr;gap:20px;}
+    .stat-num{font-size:28px;}
+    .gallery-slide-item { flex: 0 0 calc(60% - 10px); }
+    .gallery-img-box { height: 280px; }
+}
+@media(max-width:576px){
+    .gallery-slide-item { flex: 0 0 100%; }
+    .gallery-img-box { height: 240px; }
+    .prev-arrow { left: 10px; }
+    .next-arrow { right: 10px; }
+}
 </style>
+
+<script>
+function scrollGallery(dir) {
+    const slider = document.getElementById('hotelGallerySlider');
+    if(!slider) return;
+    const itemWidth = slider.querySelector('.gallery-slide-item').offsetWidth + 20; // width + gap
+    slider.scrollBy({ left: dir * itemWidth, behavior: 'smooth' });
+}
+</script>
 
 <?php require __DIR__ . '/includes/footer.php'; ?>

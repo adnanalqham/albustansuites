@@ -6,13 +6,19 @@ $db = getDB();
 $adminPage = 'bookings';
 $adminPageTitle = 'admin_manage_bookings';
 
+try {
+    $db->exec("ALTER TABLE bookings ADD COLUMN room_number_id INT NULL AFTER room_id");
+    $db->exec("ALTER TABLE bookings ADD FOREIGN KEY (room_number_id) REFERENCES room_numbers(id) ON DELETE SET NULL");
+} catch(Exception $e){}
+
 // Status filter
 $filterStatus = sanitize($_GET['status'] ?? '');
 $search = sanitize($_GET['q'] ?? '');
 
 // Update status action
 if(isset($_POST['update_status'])) {
-    $db->prepare("UPDATE bookings SET status=? WHERE id=?")->execute([$_POST['status'], (int)$_POST['booking_id']]);
+    $rnId = !empty($_POST['room_number_id']) ? (int)$_POST['room_number_id'] : null;
+    $db->prepare("UPDATE bookings SET status=?, room_number_id=? WHERE id=?")->execute([$_POST['status'], $rnId, (int)$_POST['booking_id']]);
     setFlash('success','Booking status updated');
     header('Location: bookings.php'); exit;
 }
@@ -67,6 +73,21 @@ require __DIR__ . '/includes/header.php';
       <form method="POST" class="admin-form">
         <input type="hidden" name="update_status" value="1">
         <input type="hidden" name="booking_id" value="<?= $editBooking['id'] ?>">
+        <div class="form-group">
+          <label><?= t('admin_assign_room') ?></label>
+          <select name="room_number_id">
+            <option value=""><?= t('admin_select_room') ?></option>
+            <?php
+            try {
+                $rns = $db->prepare("SELECT id, room_number, status FROM room_numbers WHERE room_id=? ORDER BY room_number");
+                $rns->execute([$editBooking['room_id']]);
+                foreach($rns->fetchAll() as $rn):
+                  $rnStatus = $rn['status']==='maintenance' ? ' ('.t('admin_room_status_maintenance').')' : '';
+            ?>
+            <option value="<?= $rn['id'] ?>" <?= (($editBooking['room_number_id']??0)==$rn['id'])?'selected':'' ?>><?= e($rn['room_number']) . $rnStatus ?></option>
+            <?php endforeach; } catch(Exception $e){} ?>
+          </select>
+        </div>
         <div class="form-group">
           <label><?= t('admin_update_status') ?></label>
           <select name="status">

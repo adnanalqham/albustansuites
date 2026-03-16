@@ -167,9 +167,10 @@ require __DIR__ . '/includes/header.php';
             <?php if($r['is_featured']): ?><span class="badge badge-warning" style="margin-left:4px;">★</span><?php endif; ?>
           </td>
           <td style="display:flex;gap:6px;">
+            <a href="room_numbers.php?room_id=<?= $r['id'] ?>" class="btn-xs btn-success" title="<?= t('admin_manage_room_numbers') ?>"><i class="fas fa-list-ol"></i></a>
             <a href="?edit=<?= $r['id'] ?>" class="btn-xs btn-info"><i class="fas fa-edit"></i></a>
-            <a href="?toggle=<?= $r['id'] ?>" class="btn-xs btn-secondary" title="Toggle availability"><i class="fas fa-power-off"></i></a>
-            <a href="?delete=<?= $r['id'] ?>" class="btn-xs btn-danger" onclick="return confirm('Delete this room?')"><i class="fas fa-trash"></i></a>
+            <a href="?toggle=<?= $r['id'] ?>" class="btn-xs btn-secondary" title="<?= t('admin_status') ?>"><i class="fas fa-power-off"></i></a>
+            <a href="?delete=<?= $r['id'] ?>" class="btn-xs btn-danger" onclick="return confirm('<?= t('admin_delete') ?>?')"><i class="fas fa-trash"></i></a>
           </td>
         </tr>
         <?php endforeach; ?>

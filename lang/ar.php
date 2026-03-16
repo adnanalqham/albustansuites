@@ -210,9 +210,27 @@ return [
 
     // Admin Rooms
     'admin_room_management' => 'إدارة الغرف',
+    'admin_room_numbers'    => 'أرقام الغرف',
+    'admin_manage_room_numbers' => 'إدارة أرقام الغرف',
+    'admin_add_room_number' => 'إضافة رقم غرفة',
+    'admin_edit_room_number'=> 'تعديل رقم الغرفة',
+    'admin_room_number'     => 'رقم الغرفة',
+    'admin_no_room_numbers' => 'لم تتم إضافة أرقام غرف بعد.',
+    'admin_save_room_number'=> 'حفظ رقم الغرفة',
+    'admin_room_status_available' => 'متاح',
+    'admin_room_status_maintenance' => 'صيانة',
     'admin_rooms_all'       => 'جميع الغرف',
     'admin_add_room'        => 'إضافة غرفة',
     'admin_add_new_room_title'=> 'إضافة غرفة جديدة',
+
+    // Room Grid
+    'admin_room_grid'       => 'لوحة الغرف',
+    'admin_assign_room'     => 'تعيين رقم الغرفة',
+    'admin_status_reserved' => 'محجوز',
+    'admin_select_room'     => '-- اختر رقم الغرفة --',
+    'admin_color_guide'     => 'دليل الألوان',
+    'admin_today_date'      => 'تاريخ اليوم',
+    'admin_room_status_occupied' => 'مشغول',
     'admin_edit_room'       => 'تعديل غرفة',
     'admin_room_name_en'    => 'اسم الغرفة (إنجليزي)',
     'admin_room_name_ar'    => 'اسم الغرفة (عربي)',

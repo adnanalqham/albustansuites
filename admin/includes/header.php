@@ -47,6 +47,9 @@ $dir = langDir();
     <div class="sidebar-item <?= ($adminPage??'')==='rooms'?'active':'' ?>">
       <a href="<?= SITE_URL ?>/admin/rooms.php"><i class="fas fa-bed"></i> <?= t('admin_rooms') ?></a>
     </div>
+    <div class="sidebar-item <?= ($adminPage??'')==='room_grid'?'active':'' ?>">
+      <a href="<?= SITE_URL ?>/admin/room_grid.php"><i class="fas fa-th"></i> <?= t('admin_room_grid') ?></a>
+    </div>
     <div class="sidebar-item <?= ($adminPage??'')==='amenities'?'active':'' ?>">
       <a href="<?= SITE_URL ?>/admin/amenities.php"><i class="fas fa-concierge-bell"></i> <?= t('admin_amenities') ?></a>
     </div>

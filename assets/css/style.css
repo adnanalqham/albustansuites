@@ -634,7 +634,7 @@ textarea.form-control { resize: vertical; min-height: 120px; }
 
 /* ---- WhatsApp Float ---- */
 .whatsapp-float {
-  position: fixed; bottom: 80px; right: 24px; z-index: 999;
+  position: fixed; bottom: 24px; left: 24px; z-index: 999;
   width: 56px; height: 56px; border-radius: 50%;
   background: #25d366; color: #fff; font-size: 26px;
   display: flex; align-items: center; justify-content: center;
@@ -643,7 +643,6 @@ textarea.form-control { resize: vertical; min-height: 120px; }
   transition: var(--transition);
 }
 .whatsapp-float:hover { transform: scale(1.1) translateY(-3px); }
-.rtl .whatsapp-float { right: auto; left: 24px; }
 
 /* ---- Back to Top ---- */
 .back-to-top {
@@ -656,7 +655,6 @@ textarea.form-control { resize: vertical; min-height: 120px; }
 }
 .back-to-top.visible { opacity: 1; visibility: visible; }
 .back-to-top:hover { transform: translateY(-3px); }
-.rtl .back-to-top { right: auto; left: 24px; }
 
 /* ---- Footer ---- */
 .site-footer { background: var(--dark-2); border-top: 1px solid var(--border-light); }

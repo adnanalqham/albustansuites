@@ -210,9 +210,27 @@ return [
 
     // Admin Rooms
     'admin_room_management' => 'Room Management',
+    'admin_room_numbers'    => 'Room Numbers',
+    'admin_manage_room_numbers' => 'Manage Room Numbers',
+    'admin_add_room_number' => 'Add Room Number',
+    'admin_edit_room_number'=> 'Edit Room Number',
+    'admin_room_number'     => 'Room Number',
+    'admin_no_room_numbers' => 'No room numbers added yet.',
+    'admin_save_room_number'=> 'Save Room Number',
+    'admin_room_status_available' => 'Available',
+    'admin_room_status_maintenance' => 'Maintenance',
     'admin_rooms_all'       => 'All Rooms',
     'admin_add_room'        => 'Add Room',
     'admin_add_new_room_title'=> 'Add New Room',
+
+    // Room Grid
+    'admin_room_grid'       => 'Room Grid',
+    'admin_assign_room'     => 'Assign Room Number',
+    'admin_status_reserved' => 'Reserved',
+    'admin_select_room'     => '-- Select Room Number --',
+    'admin_color_guide'     => 'Color Guide',
+    'admin_today_date'      => 'Today\'s Date',
+    'admin_room_status_occupied' => 'Occupied',
     'admin_edit_room'       => 'Edit Room',
     'admin_room_name_en'    => 'Room Name (English)',
     'admin_room_name_ar'    => 'Room Name (Arabic)',

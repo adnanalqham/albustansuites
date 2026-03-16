@@ -6,6 +6,11 @@ $db = getDB();
 $adminPage = 'gallery';
 $adminPageTitle = 'admin_gallery_management';
 
+try {
+    $db->exec("ALTER TABLE gallery ADD COLUMN description_en TEXT NULL AFTER title_ar");
+    $db->exec("ALTER TABLE gallery ADD COLUMN description_ar TEXT NULL AFTER description_en");
+} catch(PDOException $e) {}
+
 // Delete
 if(isset($_GET['delete']) && is_numeric($_GET['delete'])) {
     $db->prepare("DELETE FROM gallery WHERE id=?")->execute([(int)$_GET['delete']]);
@@ -20,6 +25,8 @@ if(isset($_GET['toggle']) && is_numeric($_GET['toggle'])) {
 if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['upload'])) {
     $title_en = sanitize($_POST['title_en']??'');
     $title_ar = sanitize($_POST['title_ar']??'');
+    $desc_en  = sanitize($_POST['desc_en']??'');
+    $desc_ar  = sanitize($_POST['desc_ar']??'');
     $category = sanitize($_POST['category']??'interior');
     $sort_order = (int)($_POST['sort_order']??0);
     $uploaded = 0;
@@ -35,7 +42,7 @@ if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['upload'])) {
             if($file['error']===UPLOAD_ERR_OK) {
                 $path = uploadImage($file, 'gallery');
                 if($path) {
-                    $db->prepare("INSERT INTO gallery (title_en,title_ar,image,category,sort_order) VALUES (?,?,?,?,?)")->execute([$title_en,$title_ar,$path,$category,$sort_order]);
+                    $db->prepare("INSERT INTO gallery (title_en,title_ar,description_en,description_ar,image,category,sort_order) VALUES (?,?,?,?,?,?,?)")->execute([$title_en,$title_ar,$desc_en,$desc_ar,$path,$category,$sort_order]);
                     $uploaded++;
                 }
             }
@@ -60,8 +67,12 @@ require __DIR__ . '/includes/header.php';
   <form method="POST" enctype="multipart/form-data" class="admin-form">
     <input type="hidden" name="upload" value="1">
     <div class="form-row">
-      <div class="form-group"><label><?= t('admin_title_en') ?></label><input type="text" name="title_en" placeholder="Optional caption"></div>
+      <div class="form-group"><label><?= t('admin_title_en') ?></label><input type="text" name="title_en" placeholder="Optional title"></div>
       <div class="form-group"><label><?= t('admin_title_ar') ?></label><input type="text" name="title_ar" placeholder="عنوان اختياري"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Description (EN)</label><textarea name="desc_en" rows="2" placeholder="Simple description..."></textarea></div>
+      <div class="form-group"><label>الشرح (عربي)</label><textarea name="desc_ar" rows="2" placeholder="شرح مبسط للصورة..."></textarea></div>
     </div>
     <div class="form-row">
       <div class="form-group"><label><?= t('admin_category_table') ?></label>
