@@ -1,0 +1,40 @@
+/* RTL Overrides for Arabic Layout */
+.rtl, [dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+.rtl .top-bar .container { flex-direction: row; }
+.rtl .top-bar-left { order: 1; }
+.rtl .top-bar-right { order: 2; margin-right: auto; }
+.rtl .main-nav .container { flex-direction: row; }
+.rtl .nav-menu { flex-direction: row; margin-right: auto; }
+.rtl .has-dropdown:hover .dropdown { right: 0; left: auto; }
+.rtl .hero-content { margin-right: 0; }
+.rtl .hero-overlay {
+  background: linear-gradient(-135deg, rgba(13,27,42,0.85) 0%, rgba(13,27,42,0.5) 60%, transparent 100%);
+}
+.rtl .section-title .subtitle { flex-direction: row-reverse; }
+.rtl .feature-card:hover .feature-icon { transform: rotateY(-360deg); }
+.rtl .restaurant-inner { direction: rtl; }
+.rtl .restaurant-content .section-title { text-align: right; }
+.rtl .footer-col ul li a { flex-direction: row-reverse; }
+.rtl .footer-col ul li a:hover { padding-inline-start: 5px; }
+.rtl .footer-contact li i { margin-left: 0; margin-right: 0; }
+.rtl .booking-widget { direction: rtl; }
+.rtl .form-row { direction: rtl; }
+.rtl .contact-info-item { flex-direction: row; }
+.rtl .testimonial-footer { flex-direction: row; }
+.rtl .room-card-footer { flex-direction: row; }
+.rtl .flash-container { right: auto; left: 20px; }
+.rtl .breadcrumb { flex-direction: row-reverse; }
+.rtl .booking-steps { flex-direction: row-reverse; }
+.rtl .summary-row { flex-direction: row-reverse; }
+.rtl .summary-total { flex-direction: row-reverse; }
+/* Arabic Font Weight Adjustments */
+.rtl h1, .rtl h2, .rtl h3, .rtl h4 { font-family: 'ArabicUI', 'Cairo', 'Tajawal', sans-serif; }
+.rtl .navbar-brand, .rtl .section-title h2 { font-family: 'ArabicUI', 'Cairo', sans-serif; }
+/* Input placeholder RTL */
+.rtl .form-control::placeholder { text-align: right; }
+.rtl .booking-field input::placeholder { text-align: right; }
+/* Menu tabs RTL */
+.rtl .menu-categories { direction: rtl; }

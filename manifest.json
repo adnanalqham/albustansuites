@@ -1,0 +1,21 @@
+{
+  "name": "Al Bustan Suites",
+  "short_name": "Al Bustan",
+  "description": "Luxurious Hotel Suites Booking",
+  "start_url": "/albustansuites/index.php",
+  "display": "standalone",
+  "background_color": "#0D1B2A",
+  "theme_color": "#0D1B2A",
+  "icons": [
+    {
+      "src": "/albustansuites/images/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/albustansuites/images/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
